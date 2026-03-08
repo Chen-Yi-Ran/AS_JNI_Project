@@ -3,7 +3,8 @@ package com.example.as_jni_project;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.widget.TextView;
+import android.util.Log;
+import android.view.View;
 
 import com.example.as_jni_project.databinding.ActivityMainBinding;
 
@@ -16,38 +17,51 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
 
-    public  static final  int A = 100;
-    public static int age = 29;
-
-    public String name = "Logan";//签名：Ljava/lang/String;
+    private final static String TAG = MainActivity.class.getSimpleName();
 
     //交互操作 JNI
-    public native void changeName();
-    public static native void changeAge();
-    public native void callAddMethod();
+    public native void testArrayAction(int count,String textIndo,int[] ints,String[] strs);
+    public native void putObject(Student student,String str);//传递引用类型，传递对象
+    public native void insertObject();//凭空创建java对象
 
 
-    //写一个函数，给native调用
-    public int add(int number1,int number2){
-        return number1+number2+8;
+
+    //点击事件：操作testArrayAction函数
+    public void test01(View view){
+        int[] ints = new int[]{1,2,3,4,5,6};
+        String[] strs = new String[]{"李小龙","李连杰","李元霸"};
+        testArrayAction(99,"你好",ints,strs);
+        for (int aInt:ints){
+            Log.d(TAG,"test01:aint---"+aInt);
+        }
     }
 
+
+    public void test02(View view){
+        Student student = new Student();
+        student.name = "史泰龙";
+        student.age = 88;
+        putObject(student, "九阳神功");
+    }
+
+
+    public void test03(View view){
+        insertObject();
+    }
+
+    public void test04(View view){
+
+    }
+
+    public void test05(View view){
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-        // Example of a call to a native method
-        TextView tv = binding.sampleText;
-        //tv.setText(stringFromJNI());
-        changeName();
-        tv.setText(name);
-        changeAge();
-        tv.setText(""+age);
-        callAddMethod();
     }
 
     /**
@@ -56,6 +70,4 @@ public class MainActivity extends AppCompatActivity {
      */
     public native String stringFromJNI();
 
-
-    public static native String StringFromJNI2();
 }
