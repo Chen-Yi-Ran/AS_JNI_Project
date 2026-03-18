@@ -16,10 +16,16 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        //指定CPU架构 Cmake中的本地库，
         externalNativeBuild {
             cmake {
-                cppFlags '-std=c++11'
+                abiFilters "armeabi-v7a"
             }
+        }
+
+        //指定CPU的架构  apk/lib/平台
+        ndk{
+            abiFilters("armeabi-v7a")
         }
     }
 
@@ -48,6 +54,8 @@ dependencies {
     implementation libs.appcompat
     implementation libs.material
     implementation libs.constraintlayout
+    // TODO 第六步：主要是 有没有提供 java的 jar包
+    implementation files("libs\\fmod.jar");
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
